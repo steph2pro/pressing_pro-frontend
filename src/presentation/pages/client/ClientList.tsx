@@ -1,37 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { GridColDef } from '@mui/x-data-grid';
-import DataTable from '../components/DataTable';
-import { fetchUsers } from '../api/ApiCollection';
+import DataTable from '../../../components/DataTable';
+import { fetchUsers } from '../../../api/ApiCollection';
 import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import AddData from '../components/AddData';
+import AddData from '../../../components/AddData';
+import useUserGetAll from '../../hooks/useUserGetAll';
+import { Client } from '../../../data/models/Client';
+import ClientAdd from './ClientAdd';
 
-const Users = () => {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const { isLoading, isError, isSuccess, data } = useQuery({
-    queryKey: ['allusers'],
-    queryFn: fetchUsers,
-  });
+const ClientList = () => {
+//   const [isOpen, setIsOpen] = React.useState(false);
+  // const { isLoading, isError, isSuccess, data } = useQuery({
+  //   queryKey: ['allusers'],
+    // queryFn: fetchUsers,
+  // });
+  const [showModal, setShowModal] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [clients, setClients] = useState([]);
+
+  const handleAddClient = (client) => {
+    setClients((prev) => [...prev, client]);
+    console.log('Client added:', client);
+    setShowModal(false);
+  };
+  
+  const { userQuery } = useUserGetAll();
+  const { data, isLoading, isError,isSuccess } = userQuery;
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 90 },
     {
-      field: 'firstName',
-      headerName: 'Name',
+      field: 'nom',
+      headerName: 'Nom',
       minWidth: 220,
       flex: 1,
       renderCell: (params) => {
         return (
-          <div className="flex gap-3 items-center">
-            <div className="avatar">
-              <div className="w-6 xl:w-9 rounded-full">
-                <img
-                  src={params.row.img || '/Portrait_Placeholder.png'}
-                  alt="user-picture"
-                />
-              </div>
-            </div>
-            <span className="mb-0 pb-0 leading-none">
+          <div className="flex items-center gap-3">
+           
+            <span className="pb-0 mb-0 leading-none">
               {params.row.firstName} {params.row.lastName}
             </span>
           </div>
@@ -41,20 +49,20 @@ const Users = () => {
     {
       field: 'email',
       type: 'string',
-      headerName: 'Email',
+      headerName: 'Adresse',
       minWidth: 200,
       flex: 1,
     },
     {
       field: 'phone',
       type: 'string',
-      headerName: 'Phone',
+      headerName: 'Telephone',
       minWidth: 120,
       flex: 1,
     },
     {
       field: 'createdAt',
-      headerName: 'Created At',
+      headerName: 'Enregistré le',
       minWidth: 100,
       type: 'string',
       flex: 1,
@@ -69,13 +77,13 @@ const Users = () => {
     //   valueGetter: (params: GridValueGetterParams) =>
     //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
     // },
-    {
-      field: 'verified',
-      headerName: 'Verified',
-      width: 80,
-      type: 'boolean',
-      flex: 1,
-    },
+    // {
+    //   field: 'verified',
+    //   headerName: 'Verified',
+    //   width: 80,
+    //   type: 'boolean',
+    //   flex: 1,
+    // },
   ];
 
   React.useEffect(() => {
@@ -95,26 +103,30 @@ const Users = () => {
   }, [isError, isLoading, isSuccess]);
 
   return (
-    <div className="w-full p-0 m-0">
-      <div className="w-full flex flex-col items-stretch gap-3">
-        <div className="w-full flex justify-between mb-5">
-          <div className="flex gap-1 justify-start flex-col items-start">
-            <h2 className="font-bold text-2xl xl:text-4xl mt-0 pt-0 text-base-content dark:text-neutral-200">
-              Users
+    <div className="w-[97%] p-0 m-0">
+      <div className="flex flex-col items-stretch w-full gap-3">
+        <div className="flex justify-between w-full mb-5">
+          <div className="flex flex-col items-start justify-start gap-1">
+            <h2 className="pt-0 mt-0 text-2xl font-bold xl:text-4xl text-base-content dark:text-neutral-200">
+              Liste des Clients
             </h2>
             {data && data.length > 0 && (
-              <span className="text-neutral dark:text-neutral-content font-medium text-base">
-                {data.length} Users Found
+              <span className="text-base font-medium text-neutral dark:text-neutral-content">
+                {data.length} Clients trouvés
               </span>
             )}
           </div>
           <button
-            onClick={() => setIsOpen(true)}
+            // onClick={() => setIsOpen(true)}
+             onClick={() => {
+                setShowModal(true);
+                setIsOpen(true);
+                }}
             className={`btn ${
               isLoading ? 'btn-disabled' : 'btn-primary'
             }`}
           >
-            Add New User +
+           Ajouter un Client +
           </button>
         </div>
         {isLoading ? (
@@ -139,22 +151,30 @@ const Users = () => {
               rows={[]}
               includeActionColumn={true}
             />
-            <div className="w-full flex justify-center">
+            <div className="flex justify-center w-full">
               Error while getting the data!
             </div>
           </>
         )}
 
-        {isOpen && (
+        {/* {isOpen && (
           <AddData
             slug={'user'}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
           />
-        )}
+        )} */}
+         {showModal && (
+        <ClientAdd
+          showModal={showModal}
+          setShowModal={setShowModal}
+          setIsOpen={setIsOpen}
+          handleAddClient={handleAddClient}
+        />
+      )}
       </div>
     </div>
   );
 };
 
-export default Users;
+export default ClientList;

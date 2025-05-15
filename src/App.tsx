@@ -5,50 +5,53 @@ import {
   Outlet,
   ScrollRestoration,
 } from 'react-router-dom';
-import Home from './pages/Home';
-import Users from './pages/Users';
-import Products from './pages/Products';
+import Home from './presentation/pages/Home';
+import Users from './presentation/pages/utilisateur/Users';
+import Products from './presentation/pages/Products';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Menu from './components/menu/Menu';
-import Error from './pages/Error';
-import Profile from './pages/Profile';
-import Orders from './pages/Orders';
-import Posts from './pages/Posts';
-import Notes from './pages/Notes';
-import Calendar from './pages/Calendar';
-import Charts from './pages/Charts';
-import Logs from './pages/Logs';
+import Error from './presentation/pages/Error';
+import Profile from './presentation/pages/Profile';
+import Orders from './presentation/pages/Orders';
+import Posts from './presentation/pages/Posts';
+import Notes from './presentation/pages/Notes';
+import Calendar from './presentation/pages/Calendar';
+import Charts from './presentation/pages/Charts';
+import Logs from './presentation/pages/Logs';
 import ToasterProvider from './components/ToasterProvider';
-import EditProfile from './pages/EditProfile';
-import User from './pages/User';
-import Product from './pages/Product';
-import Login from './pages/Login';
+import EditProfile from './presentation/pages/EditProfile';
+import User from './presentation/pages/User';
+import Product from './presentation/pages/Product';
+import Login from './presentation/pages/Login';
+import ClientList from './presentation/pages/client/ClientList';
+import VetementList from './presentation/pages/vetement/VetementList';
+import RetraitList from './presentation/pages/vetement/RetraitList';
 
 function App() {
-  const Layout = () => {
-    return (
-      <div
-        id="rootContainer"
-        className="w-full p-0 m-0 overflow-visible min-h-screen flex flex-col justify-between"
-      >
-        <ToasterProvider />
-        <ScrollRestoration />
-        <div>
-          <Navbar />
-          <div className="w-full flex gap-0 pt-20 xl:pt-[96px] 2xl:pt-[112px] mb-auto">
-            <div className="hidden xl:block xl:w-[250px] 2xl:w-[280px] 3xl:w-[350px] border-r-2 border-base-300 dark:border-slate-700 px-3 xl:px-4 xl:py-1">
-              <Menu />
-            </div>
-            <div className="w-full px-4 xl:px-4 2xl:px-5 xl:py-2 overflow-clip">
+  const Layout = () => (
+    <div className="flex flex-col justify-between w-full min-h-screen p-0 m-0 overflow-visible">
+      <ToasterProvider />
+      <ScrollRestoration />
+      <div>
+        <Navbar />
+        <div className="relative flex min-h-screen">
+          <div className="hidden xl:block fixed top-20 p-4 left-0 h-[calc(100vh-80px)] w-[230px] border-r-2 border-base-300 dark:border-slate-700 bg-white dark:bg-slate-800 overflow-y-auto shadow-md rounded-lg">
+            <Menu />
+          </div>
+
+          <div className="flex flex-col flex-grow xl:ml-[250px] mt-6">
+            <div className="flex-grow pt-16 mt-6">
               <Outlet />
             </div>
+            <footer className="p-4 text-center text-gray-700 bg-white dark:bg-slate-800 dark:text-white">
+              <Footer />
+            </footer>
           </div>
         </div>
-        <Footer />
       </div>
-    );
-  };
+    </div>
+  );
 
   const router = createBrowserRouter([
     {
@@ -67,6 +70,11 @@ function App() {
           path: '/profile/edit',
           element: <EditProfile />,
         },
+        
+        {
+          path: '/clients',
+          element: <ClientList />,
+        },
         {
           path: '/users',
           element: <Users />,
@@ -76,8 +84,8 @@ function App() {
           element: <User />,
         },
         {
-          path: '/products',
-          element: <Products />,
+          path: '/vetements',
+          element: <VetementList />,
         },
         {
           path: '/products/:id',
@@ -88,8 +96,8 @@ function App() {
           element: <Orders />,
         },
         {
-          path: '/posts',
-          element: <Posts />,
+          path: '/retraits',
+          element: <RetraitList />,
         },
         {
           path: '/notes',

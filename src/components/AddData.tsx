@@ -20,10 +20,11 @@ const AddData: React.FC<AddDataProps> = ({
   const [preview, setPreview] = React.useState<string | null>(null);
 
   // add user
-  const [firstName, setFirstName] = React.useState('');
-  const [lastName, setLastName] = React.useState('');
+  const [nom, setNom] = React.useState('');
+  const [adresse, setAdresse] = React.useState('');
   const [email, setEmail] = React.useState('');
-  const [phone, setPhone] = React.useState('');
+  const [telephone, setTelephone] = React.useState('');
+  const [passWord, setPassWord] = React.useState('');
   const [isVerified, setIsVerified] = React.useState('');
   const [formUserIsEmpty, setFormUserIsEmpty] = React.useState(true);
 
@@ -57,10 +58,11 @@ const AddData: React.FC<AddDataProps> = ({
   // add user
   React.useEffect(() => {
     if (
-      firstName === '' ||
-      lastName === '' ||
+      nom === '' ||
+      adresse === '' ||
       email === '' ||
-      phone === '' ||
+      telephone === '' ||
+      passWord === '' ||
       isVerified === '' ||
       file === null
     ) {
@@ -68,16 +70,17 @@ const AddData: React.FC<AddDataProps> = ({
     }
 
     if (
-      firstName !== '' &&
-      lastName !== '' &&
+      nom !== '' &&
+      adresse !== '' &&
       email !== '' &&
-      phone !== '' &&
+      telephone !== '' &&
+      passWord !== '' &&
       isVerified !== '' &&
       file !== null
     ) {
       setFormUserIsEmpty(false);
     }
-  }, [email, file, firstName, isVerified, lastName, phone]);
+  }, [email, file, nom, isVerified, adresse, telephone, passWord]);
 
   React.useEffect(() => {
     if (
@@ -112,7 +115,7 @@ const AddData: React.FC<AddDataProps> = ({
           }
             ${showModal ? 'opacity-100' : 'opacity-0'}`}
         >
-          <div className="w-full flex justify-between pb-5 border-b border-base-content border-opacity-30">
+          <div className="flex justify-between w-full pb-5 border-b border-base-content border-opacity-30">
             <button
               onClick={() => {
                 setShowModal(false);
@@ -126,45 +129,46 @@ const AddData: React.FC<AddDataProps> = ({
           </div>
           <form
             onSubmit={handleSubmit}
-            className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4"
+            className="grid w-full grid-cols-1 gap-4 lg:grid-cols-2"
           >
             <input
               type="text"
-              placeholder="First Name"
-              className="input input-bordered w-full"
-              name="firstName"
-              id="firstName"
+              placeholder="Nom complet"
+              className="w-full input input-bordered"
+              name="Nom"
+              id="Nom"
               onChange={(element) =>
-                setFirstName(element.target.value)
+                setNom(element.target.value)
               }
             />
             <input
               type="text"
-              placeholder="Last Name"
-              className="input input-bordered w-full"
-              name="lastName"
-              id="lastName"
+              placeholder="Adresse"
+              className="w-full input input-bordered"
+              name="Adresse"
+              id="Adresse"
               onChange={(element) =>
-                setLastName(element.target.value)
+                setAdresse(element.target.value)
               }
             />
             <input
               type="email"
               placeholder="Email"
-              className="input input-bordered w-full"
+              className="w-full input input-bordered"
               name="email"
               id="email"
               onChange={(element) => setEmail(element.target.value)}
             />
+           
             <input
-              type="text"
-              placeholder="Phone"
-              className="input input-bordered w-full"
-              name="phone"
-              id="phone"
-              onChange={(element) => setPhone(element.target.value)}
+              type="phone"
+              placeholder="Telephone"
+              className="w-full input input-bordered"
+              name="Telephone"
+              id="Telephone"
+              onChange={(element) => setTelephone(element.target.value)}
             />
-            <label className="form-control w-full">
+            <label className="w-full form-control">
               <div className="label">
                 <span className="label-text">Verified Status</span>
               </div>
@@ -183,7 +187,7 @@ const AddData: React.FC<AddDataProps> = ({
                 <option value="false">No</option>
               </select>
             </label>
-            <label className="form-control w-full">
+            <label className="w-full form-control">
               <div className="label">
                 <span className="label-text">
                   Pick a profile photo
@@ -191,12 +195,20 @@ const AddData: React.FC<AddDataProps> = ({
               </div>
               <input
                 type="file"
-                className="file-input file-input-bordered w-full"
+                className="w-full file-input file-input-bordered"
                 onChange={loadImage}
               />
             </label>
+             <input
+              type="password"
+              placeholder="Password"
+              className="w-full input input-bordered"
+              name="password"
+              id="password"
+              onChange={(element) => setPassWord(element.target.value)}
+            />
             {preview && preview !== '' && (
-              <div className="w-full flex flex-col items-start gap-3">
+              <div className="flex flex-col items-start w-full gap-3">
                 <span>Profile Preview</span>
                 <div className="avatar">
                   <div className="w-24 rounded-full">
@@ -227,7 +239,7 @@ const AddData: React.FC<AddDataProps> = ({
           }
             ${showModal ? 'opacity-100' : 'opacity-0'}`}
         >
-          <div className="w-full flex justify-between pb-5 border-b border-base-content border-opacity-30">
+          <div className="flex justify-between w-full pb-5 border-b border-base-content border-opacity-30">
             <button
               onClick={() => {
                 setShowModal(false);
@@ -241,12 +253,12 @@ const AddData: React.FC<AddDataProps> = ({
           </div>
           <form
             onSubmit={handleSubmit}
-            className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4"
+            className="grid w-full grid-cols-1 gap-4 lg:grid-cols-2"
           >
             <input
               type="text"
               placeholder="Product Title"
-              className="input input-bordered w-full"
+              className="w-full input input-bordered"
               name="title"
               id="title"
               onChange={(element) => setTitle(element.target.value)}
@@ -254,7 +266,7 @@ const AddData: React.FC<AddDataProps> = ({
             <input
               type="text"
               placeholder="Colour: Black, White, Red, etc"
-              className="input input-bordered w-full"
+              className="w-full input input-bordered"
               name="color"
               id="color"
               onChange={(element) => setColor(element.target.value)}
@@ -262,7 +274,7 @@ const AddData: React.FC<AddDataProps> = ({
             <input
               type="text"
               placeholder="Producer: Samsung, Apple, etc"
-              className="input input-bordered w-full"
+              className="w-full input input-bordered"
               name="producer"
               id="producer"
               onChange={(element) =>
@@ -272,12 +284,12 @@ const AddData: React.FC<AddDataProps> = ({
             <input
               type="text"
               placeholder="Price"
-              className="input input-bordered w-full"
+              className="w-full input input-bordered"
               name="price"
               id="price"
               onChange={(element) => setPrice(element.target.value)}
             />
-            <label className="form-control w-full">
+            <label className="w-full form-control">
               <div className="label">
                 <span className="label-text">In Stock Status</span>
               </div>
@@ -296,7 +308,7 @@ const AddData: React.FC<AddDataProps> = ({
                 <option value="false">No</option>
               </select>
             </label>
-            <label className="form-control w-full">
+            <label className="w-full form-control">
               <div className="label">
                 <span className="label-text">
                   Pick a product image
@@ -304,12 +316,12 @@ const AddData: React.FC<AddDataProps> = ({
               </div>
               <input
                 type="file"
-                className="file-input file-input-bordered w-full"
+                className="w-full file-input file-input-bordered"
                 onChange={loadImage}
               />
             </label>
             {preview && preview !== '' && (
-              <div className="w-full flex flex-col items-start gap-3">
+              <div className="flex flex-col items-start w-full gap-3">
                 <span>Product Preview</span>
                 <div className="avatar">
                   <div className="w-24 rounded-full">

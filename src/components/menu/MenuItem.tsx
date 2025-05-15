@@ -19,9 +19,12 @@ const MenuItem: React.FC<MenuItemProps> = ({
   catalog,
   listItems,
 }) => {
+  const baseClasses =
+    "btn 2xl:min-h-[52px] 3xl:min-h-[64px] btn-ghost btn-block justify-start transition-colors duration-200 hover:bg-[#3b82f600] focus:bg-[#3b82f63f] dark:hover:bg-[#3b82f600] dark:focus:bg-[#3b82f63f]";
+
   return (
-    <div className="w-full flex flex-col items-stretch gap-2">
-      <span className="hidden xl:block px-2 xl:text-sm 2xl:text-base 3xl:text-lg uppercase">
+    <li className="flex flex-col items-stretch w-full gap-2">
+      <span className="hidden xl:block menu-label">
         {catalog}
       </span>
       {listItems.map((listItem, index) => {
@@ -33,12 +36,12 @@ const MenuItem: React.FC<MenuItemProps> = ({
               to={listItem.url || ''}
               className={({ isActive }) =>
                 isActive
-                  ? 'btn 2xl:min-h-[52px] 3xl:min-h-[64px] btn-active btn-ghost btn-block justify-start'
-                  : 'btn 2xl:min-h-[52px] 3xl:min-h-[64px] btn-ghost btn-block justify-start'
+                  ? `${baseClasses} text-[#2563eb] bg-[#3b82f63f]`
+                  : `${baseClasses} hover:text-[#2563eb] focus:text-[#3b82f6]`
               }
             >
               <listItem.icon className="xl:text-2xl 2xl:text-3xl 3xl:text-4xl" />
-              <span className="xl:text-sm 2xl:text-base 3xl:text-lg capitalize">
+              <span className="menu-label">
                 {listItem.label}
               </span>
             </NavLink>
@@ -48,17 +51,17 @@ const MenuItem: React.FC<MenuItemProps> = ({
             <button
               key={index}
               onClick={listItem.onClick}
-              className="btn 2xl:min-h-[52px] 3xl:min-h-[64px] btn-ghost btn-block justify-start"
+              className={`${baseClasses} hover:text-[#2563eb] focus:text-[#3b82f6] dark:hover:text-[#2563eb] dark:focus:text-[#3b82f6]`}
             >
               <listItem.icon className="xl:text-2xl 2xl:text-3xl 3xl:text-4xl" />
-              <span className="xl:text-sm 2xl:text-base 3xl:text-lg capitalize">
+              <span className="menu-label">
                 {listItem.label}
               </span>
             </button>
           );
         }
       })}
-    </div>
+    </li>
   );
 };
 

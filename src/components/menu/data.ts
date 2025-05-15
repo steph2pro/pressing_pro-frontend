@@ -1,4 +1,3 @@
-// import toast from 'react-hot-toast';
 import {
   HiOutlineHome,
   HiOutlineUser,
@@ -16,99 +15,104 @@ import {
 
 export const menu = [
   {
-    catalog: 'main',
+    catalog: 'principal',
     listItems: [
       {
         isLink: true,
         url: '/',
         icon: HiOutlineHome,
-        label: 'homepage',
+        label: 'accueil',
       },
       {
         isLink: true,
         url: '/profile',
         icon: HiOutlineUser,
-        label: 'profile',
+        label: 'profil',
       },
     ],
   },
   {
-    catalog: 'lists',
-    listItems: [
-      {
+    catalog: 'gestion',
+    listItems: [{
         isLink: true,
         url: '/users',
         icon: HiOutlineUsers,
-        label: 'users',
+        label: 'Utilisateurs',
       },
       {
         isLink: true,
-        url: '/products',
+        url: '/clients',
+        icon: HiOutlineUsers,
+        label: 'clients',
+      },
+      {
+        isLink: true,
+        url: '/vetements',
         icon: HiOutlineCube,
-        label: 'products',
+        label: 'vetements',
+      },
+      {
+        isLink: true,
+        url: '/retraits',
+        icon: HiOutlineDocumentChartBar,
+        label: 'retraits',
       },
       {
         isLink: true,
         url: '/orders',
         icon: HiOutlineClipboardDocumentList,
-        label: 'orders',
-      },
-      {
-        isLink: true,
-        url: '/posts',
-        icon: HiOutlineDocumentChartBar,
-        label: 'posts',
+        label: 'Factures',
       },
     ],
   },
+  // {
+  //   catalog: 'général',
+  //   listItems: [
+  //     {
+  //       isLink: true,
+  //       url: '/notes',
+  //       icon: HiOutlinePencilSquare,
+  //       label: 'notes',
+  //     },
+  //     {
+  //       isLink: true,
+  //       url: '/calendar',
+  //       icon: HiOutlineCalendarDays,
+  //       label: 'calendrier',
+  //     },
+  //   ],
+  // },
   {
-    catalog: 'general',
-    listItems: [
-      {
-        isLink: true,
-        url: '/notes',
-        icon: HiOutlinePencilSquare,
-        label: 'notes',
-      },
-      {
-        isLink: true,
-        url: '/calendar',
-        icon: HiOutlineCalendarDays,
-        label: 'calendar',
-      },
-    ],
-  },
-  {
-    catalog: 'analytics',
+    catalog: 'statistiques',
     listItems: [
       {
         isLink: true,
         url: '/charts',
         icon: HiOutlinePresentationChartBar,
-        label: 'charts',
+        label: 'statistiques',
       },
       {
         isLink: true,
         url: '/logs',
         icon: HiOutlineDocumentText,
-        label: 'logs',
+        label: 'historique',
       },
     ],
   },
   {
-    catalog: 'miscellaneous',
+    catalog: 'divers',
     listItems: [
       // {
       //   isLink: true,
-      //   url: '/settings',
+      //   url: '/parametres',
       //   icon: IoSettingsOutline,
-      //   label: 'settings',
+      //   label: 'paramètres',
       // },
       {
         isLink: true,
-        url: '/login',
+        url: '/deconnexion',
         icon: HiOutlineArrowLeftOnRectangle,
-        label: 'log out',
+        label: 'déconnexion',
       },
     ],
   },

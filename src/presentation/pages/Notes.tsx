@@ -3,8 +3,8 @@ import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
-import NoteCard from '../components/notes/NoteCard';
-import { fetchNotes } from '../api/ApiCollection';
+import NoteCard from '../../components/notes/NoteCard';
+import { fetchNotes } from '../../api/ApiCollection';
 import { HiOutlineXMark } from 'react-icons/hi2';
 // import { allNotes } from '../components/notes/data';
 

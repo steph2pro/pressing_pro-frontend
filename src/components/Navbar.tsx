@@ -34,9 +34,9 @@ const Navbar = () => {
     // navbar screen
     <div className="fixed z-[3] top-0 left-0 right-0 bg-base-100 w-full flex justify-between px-3 xl:px-4 py-3 xl:py-5 gap-4 xl:gap-0">
       {/* container */}
-      <div className="flex gap-3 items-center">
+      <div className="flex items-center gap-3">
         {/* for mobile */}
-        <div className="drawer w-auto p-0 mr-1 xl:hidden">
+        <div className="w-auto p-0 mr-1 drawer xl:hidden">
           <input
             id="drawer-navbar-mobile"
             type="checkbox"
@@ -44,7 +44,7 @@ const Navbar = () => {
             checked={isDrawerOpen}
             onChange={toggleDrawer}
           />
-          <div className="p-0 w-auto drawer-content">
+          <div className="w-auto p-0 drawer-content">
             <label
               htmlFor="drawer-navbar-mobile"
               className="p-0 btn btn-ghost drawer-button"
@@ -58,14 +58,14 @@ const Navbar = () => {
               aria-label="close sidebar"
               className="drawer-overlay"
             ></label>
-            <div className="menu p-4 w-auto min-h-full bg-base-200 text-base-content">
+            <div className="w-auto min-h-full p-4 menu bg-base-200 text-base-content">
               <Link
                 to={'/'}
-                className="flex items-center gap-1 xl:gap-2 mt-1 mb-5"
+                className="flex items-center gap-1 mt-1 mb-5 xl:gap-2"
               >
                 <DiReact className="text-3xl sm:text-4xl xl:text-4xl 2xl:text-6xl text-primary animate-spin-slow" />
                 <span className="text-[16px] leading-[1.2] sm:text-lg xl:text-xl 2xl:text-2xl font-semibold text-base-content dark:text-neutral-200">
-                  React Dashboard
+                  PRESSING PRO
                 </span>
               </Link>
               {menu.map((item, index) => (
@@ -84,7 +84,7 @@ const Navbar = () => {
         <Link to={'/'} className="flex items-center gap-1 xl:gap-2">
           <DiReact className="text-3xl sm:text-4xl xl:text-4xl 2xl:text-6xl text-primary animate-spin-slow" />
           <span className="text-[16px] leading-[1.2] sm:text-lg xl:text-xl 2xl:text-2xl font-semibold text-base-content dark:text-neutral-200">
-            React Dashboard
+            ENTREPRISE
           </span>
         </Link>
       </div>
@@ -139,7 +139,7 @@ const Navbar = () => {
             role="button"
             className="btn btn-ghost btn-circle avatar"
           >
-            <div className="w-9  rounded-full">
+            <div className="rounded-full w-9">
               <img
                 src="https://avatars.githubusercontent.com/u/74099030?v=4"
                 alt="foto-cowok-ganteng"

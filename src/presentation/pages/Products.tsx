@@ -1,10 +1,10 @@
 import React from 'react';
 import { GridColDef } from '@mui/x-data-grid';
-import DataTable from '../components/DataTable';
-import { fetchProducts } from '../api/ApiCollection';
+import DataTable from '../../components/DataTable';
+import { fetchProducts } from '../../api/ApiCollection';
 import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import AddData from '../components/AddData';
+import AddData from '../../components/AddData';
 
 const Products = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -17,20 +17,20 @@ const Products = () => {
     { field: 'id', headerName: 'ID', width: 90 },
     {
       field: 'img',
-      headerName: 'Product',
+      headerName: 'Vetement',
       minWidth: 300,
       flex: 1,
       renderCell: (params) => {
         return (
-          <div className="flex gap-3 items-center">
-            <div className="w-6 xl:w-10 overflow-hidden flex justify-center items-center">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center w-6 overflow-hidden xl:w-10">
               <img
                 src={params.row.img || '/corrugated-box.jpg'}
                 alt="product-picture"
                 className="object-cover"
               />
             </div>
-            <span className="mb-0 pb-0 leading-none">
+            <span className="pb-0 mb-0 leading-none">
               {params.row.title}
             </span>
           </div>
@@ -46,38 +46,38 @@ const Products = () => {
     {
       field: 'color',
       type: 'string',
-      headerName: 'Color',
+      headerName: 'Couleur',
       minWidth: 100,
       flex: 1,
     },
     {
       field: 'price',
       type: 'string',
-      headerName: 'Price',
+      headerName: 'Marque',
       minWidth: 100,
       flex: 1,
     },
     {
       field: 'producer',
-      headerName: 'Producer',
+      headerName: 'Propriétaire',
       type: 'string',
       minWidth: 100,
       flex: 1,
     },
     {
       field: 'createdAt',
-      headerName: 'Created At',
+      headerName: 'Enregistré le',
       minWidth: 100,
       type: 'string',
       flex: 1,
     },
-    {
-      field: 'inStock',
-      headerName: 'In Stock',
-      minWidth: 80,
-      type: 'boolean',
-      flex: 1,
-    },
+    // {
+    //   field: 'inStock',
+    //   headerName: 'In Stock',
+    //   minWidth: 80,
+    //   type: 'boolean',
+    //   flex: 1,
+    // },
   ];
 
   React.useEffect(() => {
@@ -98,14 +98,14 @@ const Products = () => {
 
   return (
     <div className="w-full p-0 m-0">
-      <div className="w-full flex flex-col items-stretch gap-3">
-        <div className="w-full flex justify-between xl:mb-5">
-          <div className="flex gap-1 justify-start flex-col items-start">
-            <h2 className="font-bold text-2xl xl:text-4xl mt-0 pt-0 text-base-content dark:text-neutral-200">
-              Products
+      <div className="flex flex-col items-stretch w-full gap-3">
+        <div className="flex justify-between w-full xl:mb-5">
+          <div className="flex flex-col items-start justify-start gap-1">
+            <h2 className="pt-0 mt-0 text-2xl font-bold xl:text-4xl text-base-content dark:text-neutral-200">
+              Liste des Depots de vetements
             </h2>
             {data && data.length > 0 && (
-              <span className="text-neutral dark:text-neutral-content font-medium text-base">
+              <span className="text-base font-medium text-neutral dark:text-neutral-content">
                 {data.length} Products Found
               </span>
             )}
@@ -116,7 +116,7 @@ const Products = () => {
               isLoading ? 'btn-disabled' : 'btn-primary'
             }`}
           >
-            Add New Product +
+            Ajouter un depot +
           </button>
         </div>
 
@@ -142,7 +142,7 @@ const Products = () => {
               rows={[]}
               includeActionColumn={true}
             />
-            <div className="w-full flex justify-center">
+            <div className="flex justify-center w-full">
               Error while getting the data!
             </div>
           </>
