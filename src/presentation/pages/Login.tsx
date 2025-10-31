@@ -1,118 +1,120 @@
-// import React from 'react';
-import ChangeThemes from '../../components/ChangesThemes';
-import { DiReact } from 'react-icons/di';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import ChangeThemes from '../components/ChangesThemes';
+import { useLogin } from '../hooks/users/useLogin';
 
 const Login = () => {
-  const navigate = useNavigate();
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    handleLogin,
+    loading,
+    error,
+  } = useLogin();
+
   return (
-    // screen
     <div className="w-full p-0 m-0">
-      {/* container */}
-      <div className="w-full min-h-screen flex justify-center items-center bg-base-200 relative">
-        {/* theme */}
+      {/* Background avec dégradé Ubuntu */}
+      <div className="relative flex items-center justify-center w-full min-h-screen bg-gradient-to-br from-ubuntu-aubergine via-ubuntu-darkAubergine to-ubuntu-orange">
         <div className="absolute top-5 right-5 z-[99]">
           <ChangeThemes />
         </div>
-        <div className="w-full h-screen xl:h-auto xl:w-[30%] 2xl:w-[25%] 3xl:w-[20%] bg-base-100 rounded-lg shadow-md flex flex-col items-center p-5 pb-7 gap-8 pt-20 xl:pt-7">
-          <div className="flex items-center gap-1 xl:gap-2">
-            <DiReact className="text-4xl sm:text-4xl xl:text-6xl 2xl:text-6xl text-primary animate-spin-slow -ml-3" />
-            <span className="text-[18px] leading-[1.2] sm:text-lg xl:text-3xl 2xl:text-3xl font-semibold text-base-content dark:text-neutral-200">
-              React Dashboard
+
+        {/* Carte de login */}
+        <div className="w-full h-screen xl:h-auto xl:w-[32%] 2xl:w-[25%] 3xl:w-[20%] bg-ubuntu-white rounded-2xl shadow-2xl flex flex-col items-center p-7 pb-10 gap-8 pt-20 xl:pt-10 border border-ubuntu-lightGrey/40">
+          {/* Logo et titre */}
+          <div className="flex flex-col items-center gap-2 text-center">
+            <img
+              src="/logo.png"
+              alt="Logo"
+              className="w-[80px] h-12 xl:w-[200px] xl:h-14 object-contain "
+            />
+            <span className="text-[22px] xl:text-3xl font-bold text-ubuntu-aubergine tracking-wide">
+              DevTech Management
+            </span>
+            <span className="text-ubuntu-darkAubergine/80 font-medium text-sm xl:text-base">
+              Bonjour 👋, bon retour parmi nous !
             </span>
           </div>
-          <span className="xl:text-xl font-semibold">
-            Hello, 👋 Welcome Back!
-          </span>
-          <div className="w-full flex flex-col items-stretch gap-3">
-            <label className="input input-bordered min-w-full flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                className="w-4 h-4 opacity-70"
-              >
-                <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
-                <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
+
+          {/* Message d’erreur */}
+          {error && (
+            <div className="text-sm text-center text-red-600 bg-red-50 py-2 px-3 rounded-md w-full">
+              {error}
+            </div>
+          )}
+
+          {/* Formulaire */}
+          <div className="flex flex-col items-stretch w-full gap-4 mt-2">
+            {/* Email */}
+            <label className="flex items-center gap-2 input input-bordered border-ubuntu-lightGrey/60 focus-within:border-ubuntu-orange rounded-md">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-ubuntu-aubergine opacity-70" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M2.5 3A1.5 1.5 0..." />
               </svg>
               <input
-                type="text"
-                className="grow input outline-none focus:outline-none border-none border-[0px] h-auto pl-1 pr-0"
-                placeholder="Email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="h-auto pl-1 pr-0 border-none outline-none grow text-sm text-ubuntu-darkAubergine placeholder:text-ubuntu-warmGrey"
+                placeholder="Adresse e-mail"
               />
             </label>
-            <label className="input input-bordered flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                className="w-4 h-4 opacity-70"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
-                  clipRule="evenodd"
-                />
+
+            {/* Password */}
+            <label className="flex items-center gap-2 input input-bordered border-ubuntu-lightGrey/60 focus-within:border-ubuntu-orange rounded-md">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-ubuntu-aubergine opacity-70" fill="currentColor" viewBox="0 0 16 16">
+                <path fillRule="evenodd" d="M14 6a4 4 0..." clipRule="evenodd" />
               </svg>
               <input
                 type="password"
-                className="grow input outline-none focus:outline-none border-none border-[0px] h-auto pl-1 pr-0"
-                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="h-auto pl-1 pr-0 border-none outline-none grow text-sm text-ubuntu-darkAubergine placeholder:text-ubuntu-warmGrey"
+                placeholder="Mot de passe"
               />
             </label>
-            <div className="flex items-center justify-between">
-              <div className="form-control">
-                <label className="label cursor-pointer gap-2">
-                  <input
-                    type="checkbox"
-                    defaultChecked
-                    className="checkbox w-4 h-4 rounded-md checkbox-primary"
-                  />
-                  <span className="label-text text-xs">
-                    Remember me
-                  </span>
-                </label>
-              </div>
+
+            {/* Remember + Forgot */}
+            <div className="flex items-center justify-between mt-1">
+              <label className="gap-2 cursor-pointer label">
+                <input
+                  type="checkbox"
+                  defaultChecked
+                  className="w-4 h-4 rounded-md checkbox border-ubuntu-orange text-ubuntu-orange focus:ring-ubuntu-orange"
+                />
+                <span className="text-xs label-text text-ubuntu-darkAubergine/90">
+                  Se souvenir de moi
+                </span>
+              </label>
               <a
                 href="#"
-                className="link link-primary font-semibold text-xs no-underline"
+                className="text-xs font-semibold text-ubuntu-orange hover:underline"
               >
-                Forgot Password?
+                Mot de passe oublié ?
               </a>
             </div>
-            <div
-              onClick={() => navigate('/')}
-              className="btn btn-block btn-primary"
+
+            {/* Submit button */}
+            <button
+              onClick={handleLogin}
+              className="btn btn-block border-none bg-ubuntu-orange hover:bg-ubuntu-aubergine text-ubuntu-white font-semibold mt-1 transition-all duration-200"
+              disabled={loading}
             >
-              Log In
-            </div>
-            <div className="divider text-sm">OR</div>
-            <div className="w-full flex justify-center items-center gap-4">
-              <button className="btn btn-circle dark:btn-neutral">
-                <img
-                  className="w-6"
-                  src="/icons8-microsoft.svg"
-                  alt="microsoft"
-                />
+              {loading ? 'Connexion...' : 'Se connecter'}
+            </button>
+
+            {/* Divider + Socials */}
+            <div className="text-sm divider text-ubuntu-darkAubergine/70">OU</div>
+            <div className="flex items-center justify-center w-full gap-4">
+              <button className="btn btn-circle bg-ubuntu-lightGrey/40 hover:bg-ubuntu-lightGrey/60 border-none">
+                <img className="w-6" src="/icons8-microsoft.svg" alt="microsoft" />
               </button>
-              <button className="btn btn-circle dark:btn-neutral">
-                <img
-                  className="w-6"
-                  src="/icons8-google.svg"
-                  alt="google"
-                />
+              <button className="btn btn-circle bg-ubuntu-lightGrey/40 hover:bg-ubuntu-lightGrey/60 border-none">
+                <img className="w-6" src="/icons8-google.svg" alt="google" />
               </button>
-              <button className="btn btn-circle dark:btn-neutral">
-                <img
-                  className="dark:hidden w-6"
-                  src="/icons8-apple-black.svg"
-                  alt="apple"
-                />
-                <img
-                  className="hidden dark:block w-6"
-                  src="/icons8-apple-white.svg"
-                  alt="apple"
-                />
+              <button className="btn btn-circle bg-ubuntu-lightGrey/40 hover:bg-ubuntu-lightGrey/60 border-none">
+                <img className="w-6" src="/icons8-apple-black.svg" alt="apple" />
               </button>
             </div>
           </div>
@@ -123,4 +125,3 @@ const Login = () => {
 };
 
 export default Login;
-

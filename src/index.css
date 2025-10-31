@@ -10,6 +10,18 @@
     padding: 0;
     overflow-x: hidden !important;
     overflow-y: auto !important;
+
+  /* Couleurs principales Ubuntu */
+  --ubuntu-orange: #E95420;
+  --ubuntu-aubergine: #772953;
+  --ubuntu-light-orange: #F6B024;
+  --ubuntu-dark-aubergine: #2C001E;
+  --ubuntu-warm-grey: #AEA79F;
+  --ubuntu-white: #FFFFFF;
+  --ubuntu-light-grey: #E0E0E0;
+
+  /* Police principale */
+  font-family: "Plus Jakarta Sans", "Ubuntu", sans-serif;
 }
 
 :fullscreen::backdrop {

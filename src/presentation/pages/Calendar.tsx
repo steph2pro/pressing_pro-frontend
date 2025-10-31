@@ -1,6 +1,6 @@
 // import React from 'react';
 
-import CalendarBox from '../../components/calendar/CalendarBox';
+import CalendarBox from '../components/calendar/CalendarBox';
 
 const Calendar = () => {
   return (

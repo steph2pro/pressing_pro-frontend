@@ -1,0 +1,290 @@
+import React, { useState } from 'react'
+import { Plus, AlertCircle, Package } from 'lucide-react'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../../components/ui/dialog'
+import { Button } from '../../components/ui/button'
+import { Input } from '../../components/ui/input'
+import { Textarea } from '../../components/ui/textarea'
+import { LoadingSpinner } from '../../components/ui/LoadingSpinner'
+import { useCreateSupply } from '../../../presentation/hooks/supplies/useCreateSupply'
+import { CreateApprovisionnementRequest, CreateLigneApprovisionnementRequest } from '../../../data/models/supplies'
+import { formatCurrency } from '../../../lib/utils'
+
+interface CreateSupplyDialogProps {
+  onSuccess: () => void
+}
+
+export const CreateSupplyDialog: React.FC<CreateSupplyDialogProps> = ({
+  onSuccess
+}) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [lignes, setLignes] = useState<CreateLigneApprovisionnementRequest[]>([
+    { produitId: 0, quantite: 1, prixAchat: 0, prixVente: 0 }
+  ])
+  const [formData, setFormData] = useState<Omit<CreateApprovisionnementRequest, 'lignes'>>({
+    fournisseur: '',
+    dateAppro: new Date()
+  })
+  
+  const { createSupply, loading, error, success } = useCreateSupply()
+
+  const handleOpen = () => {
+    setIsOpen(true)
+    // Réinitialiser le formulaire
+    setFormData({
+      fournisseur: '',
+      dateAppro: new Date()
+    })
+    setLignes([{ produitId: 0, quantite: 1, prixAchat: 0, prixVente: 0 }])
+  }
+
+  const handleClose = () => {
+    setIsOpen(false)
+  }
+
+  const handleSubmit = async () => {
+    if (!formData.fournisseur || lignes.some(ligne => ligne.produitId === 0 || ligne.quantite <= 0 || ligne.prixAchat <= 0 || ligne.prixVente <= 0)) {
+      alert('Veuillez remplir tous les champs obligatoires')
+      return
+    }
+
+    const supplyData: CreateApprovisionnementRequest = {
+      ...formData,
+      lignes
+    }
+
+    const result = await createSupply(supplyData)
+    
+    if (result) {
+      setTimeout(() => {
+        onSuccess()
+        handleClose()
+      }, 1000)
+    }
+  }
+
+  const handleChange = (field: string, value: any) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  const handleLigneChange = (index: number, field: string, value: any) => {
+    const newLignes = [...lignes]
+    newLignes[index] = { ...newLignes[index], [field]: value }
+    setLignes(newLignes)
+  }
+
+  const addLigne = () => {
+    setLignes([...lignes, { produitId: 0, quantite: 1, prixAchat: 0, prixVente: 0 }])
+  }
+
+  const removeLigne = (index: number) => {
+    if (lignes.length > 1) {
+      setLignes(lignes.filter((_, i) => i !== index))
+    }
+  }
+
+  const total = lignes.reduce((sum, ligne) => sum + (ligne.quantite * ligne.prixAchat), 0)
+
+  return (
+    <>
+      <Button 
+        onClick={handleOpen}
+        style={{ 
+          backgroundColor: 'var(--ubuntu-orange, #E95420)',
+          color: 'var(--ubuntu-white, #FFFFFF)'
+        }}
+      >
+        <Plus className="w-4 h-4 mr-2" />
+        Nouvel approvisionnement
+      </Button>
+
+      <Dialog open={isOpen} onOpenChange={handleClose}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Créer un nouvel approvisionnement</DialogTitle>
+            <DialogDescription>
+              Remplissez les informations pour créer une nouvelle commande fournisseur.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="grid gap-6 py-4">
+            {/* Informations générales */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Fournisseur *
+                </label>
+                <Input
+                  value={formData.fournisseur}
+                  onChange={(e) => handleChange('fournisseur', e.target.value)}
+                  placeholder="Nom du fournisseur..."
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Date d'approvisionnement *
+                </label>
+                <Input
+                  type="date"
+                  value={formData.dateAppro.toISOString().split('T')[0]}
+                  onChange={(e) => handleChange('dateAppro', new Date(e.target.value))}
+                />
+              </div>
+            </div>
+
+            {/* Lignes d'approvisionnement */}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <label className="block text-sm font-medium">
+                  Articles commandés *
+                </label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={addLigne}
+                >
+                  <Plus className="w-4 h-4 mr-1" />
+                  Ajouter un article
+                </Button>
+              </div>
+              
+              <div className="space-y-4">
+                {lignes.map((ligne, index) => (
+                  <div key={index} className="flex items-end gap-4 p-4 border rounded-lg">
+                    <div className="flex-1">
+                      <label className="block text-sm font-medium mb-2">
+                        ID Produit *
+                      </label>
+                      <Input
+                        type="number"
+                        value={ligne.produitId}
+                        onChange={(e) => handleLigneChange(index, 'produitId', parseInt(e.target.value))}
+                        placeholder="ID du produit"
+                        min="1"
+                      />
+                    </div>
+                    <div className="w-24">
+                      <label className="block text-sm font-medium mb-2">
+                        Quantité *
+                      </label>
+                      <Input
+                        type="number"
+                        value={ligne.quantite}
+                        onChange={(e) => handleLigneChange(index, 'quantite', parseInt(e.target.value))}
+                        placeholder="1"
+                        min="1"
+                      />
+                    </div>
+                    <div className="w-32">
+                      <label className="block text-sm font-medium mb-2">
+                        Prix d'achat *
+                      </label>
+                      <Input
+                        type="number"
+                        value={ligne.prixAchat}
+                        onChange={(e) => handleLigneChange(index, 'prixAchat', parseFloat(e.target.value))}
+                        placeholder="0.00"
+                        step="0.01"
+                        min="0"
+                      />
+                    </div>
+                    <div className="w-32">
+                      <label className="block text-sm font-medium mb-2">
+                        Prix de vente *
+                      </label>
+                      <Input
+                        type="number"
+                        value={ligne.prixVente}
+                        onChange={(e) => handleLigneChange(index, 'prixVente', parseFloat(e.target.value))}
+                        placeholder="0.00"
+                        step="0.01"
+                        min="0"
+                      />
+                    </div>
+                    <div className="w-20">
+                      <label className="block text-sm font-medium mb-2">
+                        Total
+                      </label>
+                      <div className="text-sm font-medium p-2 bg-gray-50 rounded">
+                        {formatCurrency(ligne.quantite * ligne.prixAchat)}
+                      </div>
+                    </div>
+                    {lignes.length > 1 && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removeLigne(index)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        ×
+                      </Button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Total */}
+            <div className="border-t pt-4">
+              <div className="flex justify-between items-center text-lg font-bold">
+                <span>Total d'achat:</span>
+                <span style={{ color: 'var(--ubuntu-aubergine, #772953)' }}>
+                  {formatCurrency(total)}
+                </span>
+              </div>
+            </div>
+
+            {/* Messages d'erreur/succès */}
+            {error && (
+              <div className="flex items-center space-x-2 text-red-600 bg-red-50 p-3 rounded-lg">
+                <AlertCircle className="w-4 h-4" />
+                <span className="text-sm">{error}</span>
+              </div>
+            )}
+
+            {success && (
+              <div className="flex items-center space-x-2 text-green-600 bg-green-50 p-3 rounded-lg">
+                <AlertCircle className="w-4 h-4" />
+                <span className="text-sm">Approvisionnement créé avec succès !</span>
+              </div>
+            )}
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={handleClose}
+              disabled={loading}
+            >
+              Annuler
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              disabled={loading || total <= 0 || !formData.fournisseur}
+              style={{ 
+                backgroundColor: 'var(--ubuntu-orange, #E95420)',
+                color: 'var(--ubuntu-white, #FFFFFF)'
+              }}
+            >
+              {loading ? (
+                <>
+                  <LoadingSpinner size="sm" className="mr-2" />
+                  Création...
+                </>
+              ) : (
+                <>
+                  <Package className="w-4 h-4 mr-2" />
+                  Créer l'approvisionnement
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
+  )
+}
